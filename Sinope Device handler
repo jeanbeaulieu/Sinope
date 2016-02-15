@@ -133,7 +133,7 @@ def setHeatingSetpoint(temp) {
 	if(!isLoggedIn()) {
 		log.debug "Need to login"
 		login(method, args, success)
-		return
+		//  return                    - must stay in the function.  Comment it fix the bug
 	}
                     def thermostatID=data.devices.id [settings.devicid.toInteger()-1]
     switch (temperatureUnit) {
@@ -215,14 +215,14 @@ def setFahrenheit() {
 	def temperatureUnit = "fahrenheit"
 	log.debug "Setting temperatureUnit to: ${temperatureUnit}"
 	sendEvent(name: "temperatureUnit",   value: temperatureUnit)
-	poll()
+	//   poll()		-- Create a bug when called from the poll function
 }
 
 def setCelsius() {
 	def temperatureUnit = "celsius"
 	log.debug "Setting temperatureUnit to: ${temperatureUnit}"
 	sendEvent(name: "temperatureUnit",   value: temperatureUnit)
-	poll()
+	//  poll()		-- Create a bug when called from the poll fonction
 }
 
 def off() {
@@ -281,7 +281,7 @@ def setPresence(status) {
             def params = [
 			uri: "https://neviweb.com/api/device/${thermostatID}/mode",
         	headers: ['Session-Id' : data.auth.session],
-            body: "mode=0"
+            body: "mode=5"			// Wrong mode number.
     		]
          
             httpPut(params)	{resp ->
